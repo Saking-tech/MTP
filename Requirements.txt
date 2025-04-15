@@ -1,0 +1,7 @@
+PyQt5
+SpeechRecognition
+pygame
+groq
+gtts
+sounddevice
+numpy
