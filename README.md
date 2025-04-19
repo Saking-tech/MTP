@@ -37,7 +37,7 @@ cd MTP
 ### 2. Install Python Dependencies
 
 ```bash
-pip install -r requirements.txt
+pip install -r Requirements.txt
 ```
 
 ### 3. Set Up the Server
