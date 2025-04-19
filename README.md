@@ -96,17 +96,11 @@ We welcome contributions! To get started:
 
 ---
 
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
-
 ## 🙌 Acknowledgements
 
 - [Node.js Serverless Function Express](https://github.com/Saking-tech/nodejs-serverless-function-express)
 - [Python](https://www.python.org/)
-- [OpenAI Translation APIs](https://platform.openai.com/)
+- [Groq Apli](https://console.groq.com/keys)
 
 ---
 
