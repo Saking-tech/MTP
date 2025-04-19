@@ -11,7 +11,7 @@ from gtts import gTTS
 import tempfile
 from pygame import mixer
 
-GROQ_API_KEY = "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"
+GROQ_API_KEY = ""
 # Add LANGUAGES dictionary as provided
 LANGUAGES = {
     'Afrikaans': 'af', 'Amharic': 'am', 'Bulgarian': 'bg', 'Bosnian': 'bs',
