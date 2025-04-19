@@ -2,4 +2,5 @@ To Install all the Dependencies
 _________________________________________________________________________________________________
 pip install -r requirements.txt
 -------------------------------------------------------------------------------------------------
-To Test for 2 User
+
+You need to run server.js in a terminal using npm start
