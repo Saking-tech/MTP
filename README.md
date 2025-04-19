@@ -110,6 +110,3 @@ We welcome contributions! To get started:
 ---
 
 Feel free to personalize further with badges, screenshots, or demo GIFs for even more appeal!
-
----
-Answer from Perplexity: pplx.ai/share
