@@ -100,7 +100,8 @@ We welcome contributions! To get started:
 
 - [Node.js Serverless Function Express](https://github.com/Saking-tech/nodejs-serverless-function-express)
 - [Python](https://www.python.org/)
-- [Groq Apli](https://console.groq.com/keys)
+- [Groq Api](https://console.groq.com/keys)
+- [gtts](https://pypi.org/project/gTTS/)
 
 ---
 
