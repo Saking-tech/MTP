@@ -1,11 +1,8 @@
 import sys
 import os
-from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
-                             QHBoxLayout, QPushButton, QDialog, QLabel,
-                             QInputDialog, QLineEdit, QListWidget, QScrollArea,
-                             QCheckBox, QComboBox, QMessageBox, QFormLayout)
-from PyQt5.QtCore import Qt, QThread, pyqtSignal, QTimer
-from PyQt5.QtGui import QFont, QIcon
+from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 import socketio
 import speech_recognition as sr
 import time
@@ -17,7 +14,8 @@ from pygame import mixer
 GROQ_API_KEY = "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"
 # Add LANGUAGES dictionary as provided
 LANGUAGES = {
-    'Afrikaans': 'af', 'Amharic': 'am', 'Arabic': 'ar', 'Bulgarian': 'bg', 'Bengali': 'bn', 'Bosnian': 'bs', 'Catalan': 'ca', 'Czech': 'cs', 'Welsh': 'cy', 'Danish': 'da', 'German': 'de', 'Greek': 'el', 'English': 'en', 'Spanish': 'es', 'Estonian': 'et', 'Basque': 'eu', 'Finnish': 'fi', 'French': 'fr', 'French (Canada)': 'fr-CA', 'Galician': 'gl', 'Gujarati': 'gu', 'Hausa': 'ha', 'Hindi': 'hi', 'Croatian': 'hr', 'Hungarian': 'hu', 'Indonesian': 'id', 'Icelandic': 'is', 'Italian': 'it', 'Hebrew': 'iw', 'Japanese': 'ja', 'Javanese': 'jw', 'Khmer': 'km', 'Kannada': 'kn', 'Korean': 'ko', 'Latin': 'la', 'Lithuanian': 'lt', 'Latvian': 'lv', 'Malayalam': 'ml', 'Marathi': 'mr', 'Malay': 'ms', 'Myanmar (Burmese)': 'my', 'Nepali': 'ne', 'Dutch': 'nl', 'Norwegian': 'no', 'Punjabi (Gurmukhi)': 'pa', 'Polish': 'pl', 'Portuguese (Brazil)': 'pt', 'Portuguese (Portugal)': 'pt-PT', 'Romanian': 'ro', 'Russian': 'ru', 'Sinhala': 'si', 'Slovak': 'sk', 'Albanian': 'sq', 'Serbian': 'sr', 'Sundanese': 'su', 'Swedish': 'sv', 'Swahili': 'sw', 'Tamil': 'ta', 'Telugu': 'te', 'Thai': 'th', 'Filipino': 'tl', 'Turkish': 'tr', 'Ukrainian': 'uk', 'Urdu': 'ur', 'Vietnamese': 'vi', 'Cantonese': 'yue', 'Chinese (Simplified)': 'zh-CN', 'Chinese (Traditional)': 'zh-TW'
+    'Afrikaans': 'af', 'Amharic': 'am', 'Bulgarian': 'bg', 'Bosnian': 'bs',
+    'Arabic': 'ar', 'Bengali': 'bn', 'Catalan': 'ca', 'Czech': 'cs', 'Welsh': 'cy', 'Danish': 'da', 'German': 'de', 'Greek': 'el', 'English': 'en', 'Spanish': 'es', 'Estonian': 'et', 'Basque': 'eu', 'Finnish': 'fi', 'French': 'fr', 'French (Canada)': 'fr-CA', 'Galician': 'gl', 'Gujarati': 'gu', 'Hausa': 'ha', 'Hindi': 'hi', 'Croatian': 'hr', 'Hungarian': 'hu', 'Indonesian': 'id', 'Icelandic': 'is', 'Italian': 'it', 'Hebrew': 'iw', 'Japanese': 'ja', 'Javanese': 'jw', 'Khmer': 'km', 'Kannada': 'kn', 'Korean': 'ko', 'Latin': 'la', 'Lithuanian': 'lt', 'Latvian': 'lv', 'Malayalam': 'ml', 'Marathi': 'mr', 'Malay': 'ms', 'Myanmar (Burmese)': 'my', 'Nepali': 'ne', 'Dutch': 'nl', 'Norwegian': 'no', 'Punjabi (Gurmukhi)': 'pa', 'Polish': 'pl', 'Portuguese (Brazil)': 'pt', 'Portuguese (Portugal)': 'pt-PT', 'Romanian': 'ro', 'Russian': 'ru', 'Sinhala': 'si', 'Slovak': 'sk', 'Albanian': 'sq', 'Serbian': 'sr', 'Sundanese': 'su', 'Swedish': 'sv', 'Swahili': 'sw', 'Tamil': 'ta', 'Telugu': 'te', 'Thai': 'th', 'Filipino': 'tl', 'Turkish': 'tr', 'Ukrainian': 'uk', 'Urdu': 'ur', 'Vietnamese': 'vi', 'Cantonese': 'yue', 'Chinese (Simplified)': 'zh-CN', 'Chinese (Traditional)': 'zh-TW'
 }
 
 class UserInfoDialog(QDialog):
@@ -125,7 +123,6 @@ class UserInfoDialog(QDialog):
 class TranslationManager:
     def __init__(self, groq_api_key):
         self.groq_client = Groq(api_key=groq_api_key)
-
     def translate_text(self, text, source_language, target_language):
         """
         Translate text from source language to target language
@@ -139,17 +136,15 @@ class TranslationManager:
                         "content": prompt
                     }
                 ],
-                model="deepseek-r1-distill-llama-70b", #meta-llama/llama-4-maverick-17b-128e-instruct, llama-3.1-8b-instant, llama-3.3-70b-versatile, deepseek-r1-distill-llama-70b
+                model="llama-3.3-70b-versatile", #meta-llama/llama-4-maverick-17b-128e-instruct, llama-3.1-8b-instant, llama-3.3-70b-versatile, deepseek-r1-distill-llama-70b
                 temperature=0.7,
-                max_tokens=300
+                max_tokens= 1000
             )
-
             translation = completion.choices[0].message.content
             return translation
         except Exception as e:
             print(f"Translation error: {e}")
             return text  # Return original text if translation fails
-
     def get_language_code(self, language_name):
         """Get language code from language name"""
         return LANGUAGES.get(language_name, 'en')
@@ -256,7 +251,6 @@ class ChatRoom:
         """Process and translate message for all users"""
         timestamp = time.strftime('%H:%M:%S')
         message = Message(text, username, source_language, timestamp)
-
         # Translate for each unique language in the room
         target_languages = set(user['language']
                                for user in self.users.values())
@@ -265,7 +259,10 @@ class ChatRoom:
                 translated_text = await self.translation_manager.translate_text(
                     text, source_language, target_lang)
                 message.add_translation(target_lang, translated_text)
-
+            # if target_lang == source_language:
+            #     translated_text = await self.translation_manager.translate_text(
+            #         text, source_language, target_lang)
+            #     message.add_translation(target_lang, translated_text)
         self.messages.append(message)
         return message
 
@@ -351,17 +348,13 @@ class SpeechThread(QThread):
         """Combine multiple audio chunks into a single AudioData object"""
         if not audio_chunks:
             return None
-
         first_chunk = audio_chunks[0]
         sample_width = first_chunk.sample_width
         sample_rate = first_chunk.sample_rate
-
         combined_data = b''
         for chunk in audio_chunks:
             combined_data += chunk.frame_data
-
         return sr.AudioData(combined_data, sample_rate, sample_width)
-
     def stop(self):
         self.is_recording = False
 
@@ -484,6 +477,21 @@ class MainApplication(QMainWindow):
         # Chat area
         chat_container = self.create_chat_area()
         content.addLayout(chat_container, stretch=7)
+        self.download_button = QPushButton('📥 Download Transcript')
+        self.download_button.clicked.connect(self.download_transcript)
+        self.download_button.setStyleSheet("""
+            QPushButton {
+                background-color: #27ae60;
+                color: white;
+                padding: 8px;
+                border: none;
+                border-radius: 5px;
+            }
+            QPushButton:hover {
+                background-color: #219a52;
+            }
+        """)
+        top_buttons.addWidget(self.download_button)
 
         # Users list
         users_container = self.create_users_list()
@@ -651,7 +659,7 @@ class MainApplication(QMainWindow):
     def connect_to_server(self):
         """Connect to the socket.io server"""
         try:
-            self.sio.connect('https://nodejs-serverless-function-express-1-t7h0.onrender.com') #Local to Online ('http://localhost:5000')
+            self.sio.connect('http://localhost:5000') #('https://nodejs-serverless-function-express-1-t7h0.onrender.com') #Local to Online ('http://localhost:5000')
         except Exception as e:
             QMessageBox.critical(self, "Connection Error",
                                  f"Could not connect to server: {str(e)}")
@@ -695,6 +703,19 @@ class MainApplication(QMainWindow):
                 )
                 data['translated_text'] = translated_text
 
+                # Auto-play translation if enabled
+                if self.auto_play.isChecked() and data['username'] != self.username:
+                    self.voice_manager.text_to_speech(
+                        translated_text,
+                        LANGUAGES[self.preferred_language]
+                    )
+            except Exception as e:
+                print(f"Translation error: {e}")
+                # Use original text if translation fails
+                data['translated_text'] = data['text']
+        if data['source_language'] == self.preferred_language:
+            try:
+                translated_text = data['text']
                 # Auto-play translation if enabled
                 if self.auto_play.isChecked() and data['username'] != self.username:
                     self.voice_manager.text_to_speech(
@@ -831,6 +852,41 @@ class MainApplication(QMainWindow):
         else:
             self.status_update.emit("No speech detected or error occurred")
 
+    def download_transcript(self):
+        """Download chat transcript as a text file"""
+        try:
+            filename, _ = QFileDialog.getSaveFileName(
+                self,
+                "Save Chat Transcript",
+                "",
+                "Text Files (*.txt);;All Files (*)"
+            )
+
+            if filename:
+                with open(filename, 'w', encoding='utf-8') as f:
+                    # Iterate through message widgets in the chat area
+                    for i in range(self.messages_layout.count() - 1):  # -1 to skip the stretch
+                        widget = self.messages_layout.itemAt(i).widget()
+                        if widget:
+                            # Get all labels in the message widget
+                            labels = widget.findChildren(QLabel)
+                            message_text = []
+                            for label in labels:
+                                message_text.append(label.text())
+                            f.write('\n'.join(message_text) + '\n\n')
+
+                QMessageBox.information(
+                    self,
+                    "Success",
+                    "Chat transcript saved successfully!"
+                )
+        except Exception as e:
+            QMessageBox.warning(
+                self,
+                "Error",
+                f"Failed to save transcript: {str(e)}"
+            )
+    
     def closeEvent(self, event):
         """Handle application closure"""
         if self.speech_thread:
@@ -839,8 +895,6 @@ class MainApplication(QMainWindow):
         if self.sio.connected:
             self.sio.disconnect()
         event.accept()
-
-# Insert SpeechThread class from earlier responses
 
 
 def main():
@@ -854,7 +908,4 @@ if __name__ == "__main__":
     main()
 
 
-#
-#
-#
-# pyinstaller --name="Multilingual Voice Chat" --onefile --windowed --icon=Translator.ico --clean --noupx --noconfirm --noconsole Final_application.py
+# pyinstaller --name="MTP" --onefile --windowed --icon=Translator.ico --clean --noupx --noconfirm --noconsole Final_application.py
