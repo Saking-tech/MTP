@@ -19,7 +19,7 @@ This project enables users to communicate in different languages with automatic,
 
 Before you begin, ensure you have the following installed:
 
-- [Python 3.7+](https://www.python.org/downloads/)
+- [Python 3.10+](https://www.python.org/downloads/)
 - [Node.js & npm](https://nodejs.org/)
 - [Git](https://git-scm.com/)
 
